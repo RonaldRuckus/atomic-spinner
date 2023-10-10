@@ -25,6 +25,7 @@ export interface AtomicSpinnerProps {
   nucleusDistanceFromCenter?: number
   nucleusSpeed?: number
   nucleusMaskOverlap?: boolean
+  nucleusIcon?: React.ReactNode;
 }
 
 const AtomicSpinner: React.FunctionComponent<AtomicSpinnerProps> = ({
@@ -46,7 +47,8 @@ const AtomicSpinner: React.FunctionComponent<AtomicSpinnerProps> = ({
   nucleusParticleSize = 2.5,
   nucleusDistanceFromCenter = 2.5,
   nucleusSpeed = 2,
-  nucleusMaskOverlap = true
+  nucleusMaskOverlap = true,
+  nucleusIcon = undefined
 }: AtomicSpinnerProps) => {
   const electronPaths = Array.from({ length: electronPathCount })
     .map((_, i) => ({
@@ -75,18 +77,27 @@ const AtomicSpinner: React.FunctionComponent<AtomicSpinnerProps> = ({
       </defs>
       {displayNucleus &&
         (
-          <Nucleus
-            layerCount={nucleusLayerCount}
-            particlesPerLayer={nucleusParticlesPerLayer}
-            particleSize={nucleusParticleSize}
-            distanceFromCenter={nucleusDistanceFromCenter}
-            particleFillColor={nucleusParticleFillColor}
-            particleBorderColor={nucleusParticleBorderColor}
-            particleBorderWidth={nucleusParticleBorderWidth}
-            orbitTime={10 / nucleusSpeed}
-            nucleusMaskOverlap={nucleusMaskOverlap}
-          />
-        )}
+          nucleusIcon 
+            ? (
+              <foreignObject x="25" y="25" width="50" height="50">
+                {nucleusIcon}
+              </foreignObject>
+            )
+            : (
+              <Nucleus
+                layerCount={nucleusLayerCount}
+                particlesPerLayer={nucleusParticlesPerLayer}
+                particleSize={nucleusParticleSize}
+                distanceFromCenter={nucleusDistanceFromCenter}
+                particleFillColor={nucleusParticleFillColor}
+                particleBorderColor={nucleusParticleBorderColor}
+                particleBorderWidth={nucleusParticleBorderWidth}
+                orbitTime={10 / nucleusSpeed}
+                nucleusMaskOverlap={nucleusMaskOverlap}
+              />
+            )
+        )
+      }
       {displayElectronPaths &&
         electronPaths.map(({ rotationAngle }) => (
           <ElectronPath
